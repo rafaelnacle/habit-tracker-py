@@ -1,5 +1,5 @@
 import os
-
+from datetime import datetime
 import dotenv
 from dotenv import load_dotenv
 import requests
@@ -43,10 +43,29 @@ headers = {
 
 pixel_creation_endpoint = f"{pixela_endpoint}/{USERNAME}/graphs/{GRAPH}"
 
+# yesterday = datetime(year=2025, month=3, day=22)
+today = datetime.now()
 pixel_data = {
-    "date": "20250323",
-    "quantity": "1",
+    "date": today.strftime("%Y%m%d"),
+    "quantity": input("How many times did you draw today? "),
 }
 
+# Create a pixel
 response = requests.post(url=pixel_creation_endpoint, json=pixel_data, headers=headers)
 print(response)
+
+update_endpoint = f"{pixela_endpoint}/{USERNAME}/graphs/{GRAPH}/{today.strftime('%Y%m%d')}"
+
+new_pixel_data = {
+    "quantity": "1"
+}
+
+# Update quantity
+# response = requests.put(url=update_endpoint, json=new_pixel_data, headers=headers)
+# print(response)
+
+delete_endpoint = f"{pixela_endpoint}/{USERNAME}/graphs/{GRAPH}/{today.strftime('%Y%m%d')}"
+
+# delete pixel from today
+# response = requests.delete(url=delete_endpoint, headers=headers)
+# print(response.text)
